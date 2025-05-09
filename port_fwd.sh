@@ -52,8 +52,10 @@ install_portfwd() {
     # 获取随机端口
     PORT=$(get_random_port)
     
-    # 生成所需随机参数
+    # 生成标准的Base64密钥
     psk=$(openssl rand -base64 16 | tr -d '\n')
+    
+    # 对密钥进行URL安全编码用于SS URL
     psk_urlsafe=$(echo -n "$psk" | tr '+/' '-_')
 
     # 配置config.json
@@ -96,9 +98,15 @@ EOF
     
     # 生成并保存客户端配置
     cat << EOF > /usr/local/etc/xray/config.txt
+# 标准SS链接 (URL安全编码密钥)
 ss://2022-blake3-aes-128-gcm:${psk_urlsafe}@${HOST_IP}:${PORT}#${IP_COUNTRY}
 
+# 一般客户端配置格式
 ${IP_COUNTRY} = ss, ${HOST_IP}, ${PORT}, encrypt-method=2022-blake3-aes-128-gcm, password=${psk}, udp-relay=true
+
+# 原始密钥 (仅供参考)
+原始密钥: ${psk}
+URL安全密钥: ${psk_urlsafe}
 EOF
 
     echo -e "${GREEN}端口转发服务安装完成!${RESET}"
