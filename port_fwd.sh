@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# 定义颜色代码
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -8,7 +7,6 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 RESET='\033[0m'
 
-# 检查root权限
 check_root() {
     if [[ ${EUID} -ne 0 ]]; then
         echo -e "${RED}错误: 此脚本必须以root身份运行!${RESET}" 1>&2
@@ -16,7 +14,6 @@ check_root() {
     fi
 }
 
-# 更新系统和安装依赖
 update_system() {
     echo -e "${GREEN}正在更新系统和安装依赖...${RESET}"
     if [ -f "/usr/bin/apt-get" ]; then
@@ -28,7 +25,6 @@ update_system() {
     fi
 }
 
-# 获取随机端口
 get_random_port() {    
     local port    
     port=$(shuf -i 1024-65000 -n 1)
@@ -39,26 +35,18 @@ get_random_port() {
     echo "$port"   
 }
 
-# 安装端口转发服务
 install_portfwd() {
     check_root
     update_system
     
     echo -e "${GREEN}正在安装端口转发服务...${RESET}"
     
-    # 安装Xray内核
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
     
-    # 获取随机端口
     PORT=$(get_random_port)
     
-    # 生成标准的Base64密钥
     psk=$(openssl rand -base64 16 | tr -d '\n')
-    
-    # 对密钥进行URL安全编码用于SS URL
-    psk_urlsafe=$(echo -n "$psk" | tr '+/' '-_')
 
-    # 配置config.json
     cat >/usr/local/etc/xray/config.json <<EOF
 {
   "log": {
@@ -84,29 +72,22 @@ install_portfwd() {
 }
 EOF
 
-    # 启动Xray服务
     systemctl enable xray.service && systemctl restart xray.service
     
-    # 获取IP并生成客户端配置
     HOST_IP=$(curl -s -4 http://www.cloudflare.com/cdn-cgi/trace | grep "ip" | awk -F "[=]" '{print $2}')
     if [[ -z "${HOST_IP}" ]]; then
         HOST_IP=$(curl -s -6 http://www.cloudflare.com/cdn-cgi/trace | grep "ip" | awk -F "[=]" '{print $2}')
     fi
     
-    # 获取IP所在国家
     IP_COUNTRY=$(curl -s http://ipinfo.io/${HOST_IP}/country)
     
-    # 生成并保存客户端配置
     cat << EOF > /usr/local/etc/xray/config.txt
-# 标准SS链接 (URL安全编码密钥)
-ss://2022-blake3-aes-128-gcm:${psk_urlsafe}@${HOST_IP}:${PORT}#${IP_COUNTRY}
+# 链接
+ss://2022-blake3-aes-128-gcm:${psk}@${HOST_IP}:${PORT}#${IP_COUNTRY}
 
-# 一般客户端配置格式
+# 格式
 ${IP_COUNTRY} = ss, ${HOST_IP}, ${PORT}, encrypt-method=2022-blake3-aes-128-gcm, password=${psk}, udp-relay=true
 
-# 原始密钥 (仅供参考)
-原始密钥: ${psk}
-URL安全密钥: ${psk_urlsafe}
 EOF
 
     echo -e "${GREEN}端口转发服务安装完成!${RESET}"
