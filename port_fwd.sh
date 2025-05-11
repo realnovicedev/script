@@ -45,7 +45,8 @@ install_portfwd() {
     
     PORT=$(get_random_port)
     
-    psk=$(openssl rand -base64 16 | tr -d '\n')
+    # Generate appropriate key for 2022-blake3-aes-256-gcm method
+    psk=$(openssl rand -base64 32)
 
     cat >/usr/local/etc/xray/config.json <<EOF
 {
