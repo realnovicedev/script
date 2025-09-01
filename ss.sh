@@ -377,9 +377,6 @@ main_menu() {
             0) echo "感谢使用，脚本退出。"; exit 0 ;;
             *) echo -e "${RED}无效选项，请重新输入。${NORMAL}" ;;
         esac
-
-        echo # 添加一个换行
-        read -r -p "按 Enter 键返回主菜单..."
     done
 }
 
