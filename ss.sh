@@ -359,25 +359,26 @@ manage_services_menu() {
 }
 
 # 主菜单
-main_menu() {
-    while true; do
-        clear
-        echo -e "${WHITE_BG}=========================================${NORMAL}"
-        echo -e "${WHITE_BG}   Shadowsocks-rust 管理脚本 (交互版)    ${NORMAL}"
-        echo -e "${WHITE_BG}=========================================${NORMAL}"
-        echo "  1. 新建 Shadowsocks 服务"
-        echo "  2. 管理现有服务"
-        echo "  0. 退出脚本"
-        echo -e "-----------------------------------------"
-        read -rp "请输入选项 [0-2]: " choice
+while true; do
+    clear
+    echo -e "${WHITE_BG}=========================================${NORMAL}"
+    echo -e "${WHITE_BG}   Shadowsocks-rust 管理脚本 (交互版)    ${NORMAL}"
+    echo -e "${WHITE_BG}=========================================${NORMAL}"
+    echo "  1. 新建 Shadowsocks 服务"
+    echo "  2. 管理现有服务"
+    echo "  0. 退出脚本"
+    echo -e "-----------------------------------------"
 
-        case $choice in
-            1) create_new_service ;;
-            2) manage_services_menu ;;
-            0) echo "感谢使用，脚本退出。"; exit 0 ;;
-            *) echo -e "${RED}无效选项，请重新输入。${NORMAL}" ;;
-        esac
-    done
+    # 从终端读取，避免残留缓冲
+    read -rp "请输入选项 [0-2]: " choice < /dev/tty
+
+    case $choice in
+        1) create_new_service ;;
+        2) manage_services_menu ;;
+        0) echo "感谢使用，脚本退出。"; exit 0 ;;
+        *) echo -e "${RED}无效选项，请重新输入。${NORMAL}" ;;
+    esac
+done
 }
 
 
