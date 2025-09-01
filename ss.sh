@@ -270,7 +270,7 @@ list_services() {
                 status="${RED}inactive${NORMAL}"
             fi
             
-            printf "| %-8s | %-36s | %-18s |\n" "$port" "$cipher" "$status"
+            echo -e "| $(printf '%-8s' "$port") | $(printf '%-36s' "$cipher") | ${status} |"
         fi
     done
     printf "+----------+--------------------------------------+------------+\n"
