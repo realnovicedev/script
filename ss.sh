@@ -379,7 +379,7 @@ main_menu() {
         esac
 
         echo # 添加一个换行
-        read -n 1 -s -r -p "按任意键返回主菜单..."
+        read -r -p "按 Enter 键返回主菜单..."
     done
 }
 
