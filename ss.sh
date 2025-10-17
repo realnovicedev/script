@@ -67,7 +67,7 @@ safe_curl() {
     local url="$1"
     local retry=0
     
-    while [[ $retry -lt $MAX_RETRIES ]]; do
+    while [[ $retry -lt $MAX_RETRIES ]]; do
         if curl -s --fail --max-time "$NETWORK_TIMEOUT" \
                --user-agent "ss-rust-manager/$SCRIPT_VERSION" \
                --tlsv1.2 "$url" 2>/dev/null; then
