@@ -51,9 +51,9 @@ readonly TMP_DIR=$(mktemp -d -t ss-rust.XXXXXX)
 trap 'cleanup' EXIT INT TERM
 
 cleanup() {
-    if [[ -d "$TMP_DIR" ]]; then
-        rm -rf "$TMP_DIR"
-    fi
+    if [[ -d "$TMP_DIR" ]]; then
+        rm -rf "$TMP_DIR"
+    fi
 }
 
 # --- 日志函数 ---
