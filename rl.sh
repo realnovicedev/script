@@ -434,7 +434,7 @@ view_subscription_info() {
 
 # --- 核心逻辑函数 ---
 write_config() {
-    local port=$1 uuid=$2 domain=$3 private_key=$4 public_key=$5 shortid="20220701"
+    local port=$1 uuid=$2 domain=$3 private_key=$4 public_key=$5 shortid="20251010"
     jq -n \
         --argjson port "$port" \
         --arg uuid "$uuid" \
