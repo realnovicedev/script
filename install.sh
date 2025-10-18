@@ -1,5 +1,5 @@
 #!/bin/bash
-# --- Shell 严格模式 ---
+
 set -euo pipefail
 
 # --- 全局常量 ---
