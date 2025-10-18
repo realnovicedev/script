@@ -1,16 +1,4 @@
 #!/bin/bash
-
-# ==============================================================================
-# Xray VLESS-Reality & Shadowsocks 2022 多功能管理脚本
-# 版本: Final v2.9.1
-# 更新日志 (v2.9.1):
-# - [安全] 添加配置文件权限保护
-# - [安全] 增强脚本下载验证
-# - [安全] 敏感信息显示保护
-# - [稳定] 网络操作重试机制
-# - [稳定] 服务启动详细错误显示
-# ==============================================================================
-
 # --- Shell 严格模式 ---
 set -euo pipefail
 
@@ -645,13 +633,13 @@ view_all_info() {
                 printf "    %s: ${cyan}%s${none}\n" "节点名称" "$link_name_raw"
                 printf "    %s: ${cyan}%s${none}\n" "服务器地址" "$ip"
                 printf "    %s: ${cyan}%s${none}\n" "端口" "$port"
-                printf "    %s: ${cyan}%s${none}\n" "UUID" "${uuid:0:8}...${uuid: -4}"
+                printf "    %s: ${cyan}%s${none}\n" "UUID" "${uuid}"
                 printf "    %s: ${cyan}%s${none}\n" "流控" "xtls-rprx-vision"
                 printf "    %s: ${cyan}%s${none}\n" "传输协议" "tcp"
                 printf "    %s: ${cyan}%s${none}\n" "安全类型" "reality"
                 printf "    %s: ${cyan}%s${none}\n" "SNI" "$domain"
                 printf "    %s: ${cyan}%s${none}\n" "指纹" "chrome"
-                printf "    %s: ${cyan}%s${none}\n" "PublicKey" "${public_key:0:16}..."
+                printf "    %s: ${cyan}%s${none}\n" "PublicKey" "$public_key"
                 printf "    %s: ${cyan}%s${none}\n" "ShortId" "$shortid"
             fi
         fi
@@ -676,7 +664,7 @@ view_all_info() {
             printf "    %s: ${cyan}%s${none}\n" "服务器地址" "$ip"
             printf "    %s: ${cyan}%s${none}\n" "端口" "$port"
             printf "    %s: ${cyan}%s${none}\n" "加密方式" "$method"
-            printf "    %s: ${cyan}%s${none}\n" "密码" "${password:0:4}...${password: -4}"
+            printf "    %s: ${cyan}%s${none}\n" "密码" "$password"
         fi
     fi
 
